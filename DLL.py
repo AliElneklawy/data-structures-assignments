@@ -1,3 +1,5 @@
+from json import loads
+
 class DNode:
     def __init__(self, data):
         self.data = data
@@ -155,13 +157,10 @@ class DoublyLinkedList:
         return self.__length == 0
     
 DLinkedList = DoublyLinkedList()
-node1 = DNode("100")
-node2 = DNode("200")
-node3 = DNode("300")
-node4 = DNode("400")
+elements = loads(input())
+operation = input()
 
-DLinkedList.insertAtEnd(node1)
-DLinkedList.insertAtEnd(node2)
-DLinkedList.insertAtEnd(node3)
-DLinkedList.insertAtEnd(node4)
+for element in elements:
+    node = DNode(element)
+    DLinkedList.insertAtEnd(node)
 

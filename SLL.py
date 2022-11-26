@@ -1,3 +1,5 @@
+from json import loads
+
 class SNode:  # singly linked list node.
     def __init__(self, data):
         self.data = data
@@ -11,8 +13,7 @@ class SinglyLinkedList:
 
     def insertAt(self, newNode: SNode, index: int) -> None:
         if self.checkError(index, self.__length):
-            print("Error")
-            return
+            return "Error"
         
         self.__length += 1
         if index == 0:
@@ -42,8 +43,7 @@ class SinglyLinkedList:
 
     def removeAt(self, index: int) -> None:
         if self.checkError(index, self.__length):
-            print("Error")
-            return
+            return "Error"
         
         self.__length -= 1
         if index == 0:
@@ -72,16 +72,14 @@ class SinglyLinkedList:
 
     def get(self, index: int):
         if self.checkError(index, self.__length):
-            print("Error")
-            return
+            return "Error"
         
         traverse = self.traverseList(index)
         return traverse.data
 
     def set(self, data, index: int) -> None:
         if self.checkError(index, self.__length):
-            print("Error")
-            return
+            return "Error"
         
         traverse = self.traverseList(index)
         traverse.data = data
@@ -107,6 +105,9 @@ class SinglyLinkedList:
             currentNode = currentNode.next
 
     def printSubList(self, fromIdx: int, toIdx: int) -> list:
+        if self.checkError(0, self.__length, fromIdx=fromIdx, toIdx=toIdx):
+            return "Error"
+        
         traverse = self.traverseList(fromIdx)
         elements = []
         while fromIdx <= toIdx:
@@ -134,10 +135,10 @@ class SinglyLinkedList:
 
 
 Slinkedlist = SinglyLinkedList()  # creating a SinglyLinkedList instance
-# numOfSNodes = int(input("Enter the number of nodes: "))
-# for i in range(numOfSNodes):
-#     node = SNode(input(f"Enter the data of node {i+1}: ")) # create a node. All the data are of type str
-#     Slinkedlist.insertAtEnd(node) # insert the node
-    
-# Slinkedlist.insertAt(SNode("5"), 2)
+elements = loads(input())
+operation = input()
 
+for element in elements:
+    node = SNode(element)
+    Slinkedlist.insertAtEnd(node)
+    
