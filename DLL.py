@@ -30,6 +30,7 @@ class DoublyLinkedList:
         newNode.prev = self.prevNode
         newNode.next = traverse
         traverse.prev = newNode
+        self.printLS()
 
     def insertAtEnd(self, newNode: DNode) -> None:
         self.__length += 1
@@ -50,6 +51,7 @@ class DoublyLinkedList:
         newNode.next = temp
         self.head = newNode
         del temp
+        self.printLS()
 
 
     def removeAt(self, index: int) -> None:
@@ -71,6 +73,7 @@ class DoublyLinkedList:
         traverse.next = None
         traverse.prev = None
         del traverse
+        self.printLS()
 
     def removeAtHead(self) -> None:
         self.__length -= 1
@@ -79,6 +82,7 @@ class DoublyLinkedList:
         self.head.prev = None
         temp.next = None
         del temp
+        self.printLS()
 
     def removeAtEnd(self, index: int):
         self.__length -= 1
@@ -86,6 +90,7 @@ class DoublyLinkedList:
         self.prevNode.next = None
         traverse.prev = None
         del traverse
+        self.printLS()
         
     def clear(self) -> None:
         self.__length = 0
@@ -105,17 +110,20 @@ class DoublyLinkedList:
 
     def set(self, data, index: int) -> None:
         if self.checkError(index, self.__length):
-            return "Error"
+            print("Error")
+            return
         
         traverse = self.traverseList(index)
         traverse.data = data
+        self.printLS()
 
     def contains(self, element) -> bool:
         traverse = self.head
         while traverse is not None:
-            if traverse.data == str(element):
+            if traverse.data == element:
                 return True
             traverse = traverse.next
+        return False
             
     def traverseList(self, index):   # will be used any time we need to traverse the list till a given index
         traverse, self.prevNode = (self.head,) * 2
@@ -126,18 +134,24 @@ class DoublyLinkedList:
     
     def printLS(self) -> None:   # print linked list
         currentNode = self.head
+        elements = []
         while currentNode is not None:
-            print(currentNode.data)
+            elements.append(currentNode.data)
             currentNode = currentNode.next
+        print(elements)
             
     def printSubList(self, fromIdx: int, toIdx: int) -> list:
+        if self.checkError(0, self.__length, fromIdx=fromIdx, toIdx=toIdx):
+            print("Error")
+            return
+        
         traverse = self.traverseList(fromIdx)
         elements = []
         while fromIdx <= toIdx:
             elements.append(traverse.data)
             fromIdx += 1
             traverse = traverse.next
-        return elements
+        print(elements)
         
     def checkError(self, index, length, fromIdx=0, toIdx=0):
         checks = [
@@ -148,15 +162,14 @@ class DoublyLinkedList:
         if any(checks):
             return True
 
-    @property
     def Size(self) -> int:
         return self.__length
 
-    @property
     def isEmpty(self) -> bool:
         return self.__length == 0
-    
-DLinkedList = DoublyLinkedList()
+  
+  
+DLinkedList = DoublyLinkedList()  
 elements = loads(input())
 operation = input()
 
@@ -164,3 +177,43 @@ for element in elements:
     node = DNode(element)
     DLinkedList.insertAtEnd(node)
 
+if operation == "add":
+    DLinkedList.insertAtEnd(DNode(int(input())))
+    DLinkedList.printLS()
+
+elif operation == "addToIndex":
+    index = int(input())
+    node = DNode(int(input()))
+    DLinkedList.insertAt(node, index)
+    
+elif operation == "get":
+    index = int(input())
+    print(DLinkedList.get(index))
+    
+elif operation == "size":
+    print(DLinkedList.Size())
+    
+elif operation == "set":
+    index = int(input())
+    data = int(input())
+    DLinkedList.set(data, index)
+
+elif operation == "clear":
+    DLinkedList.clear()
+    print([])
+    
+elif operation == "isEmpty":
+    print(DLinkedList.isEmpty())
+    
+elif operation == "remove":
+    index = int(input())
+    DLinkedList.removeAt(index)
+
+elif operation == "sublist":
+    fromIdx = int(input())
+    toIdx = int(input())
+    DLinkedList.printSubList(fromIdx, toIdx)
+    
+elif operation == "contains":
+    elmnt = int(input())
+    print(DLinkedList.contains(elmnt))

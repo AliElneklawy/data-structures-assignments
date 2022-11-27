@@ -13,8 +13,9 @@ class SinglyLinkedList:
 
     def insertAt(self, newNode: SNode, index: int) -> None:
         if self.checkError(index, self.__length):
-            return "Error"
-        
+            print("Error")
+            return
+
         self.__length += 1
         if index == 0:
             self.__insertAtHead(newNode)
@@ -23,6 +24,7 @@ class SinglyLinkedList:
         traverse = self.traverseList(index)   # stop at the given index
         newNode.next = traverse
         self.prevNode.next = newNode
+        self.printLS()
 
     def insertAtEnd(self, newNode: SNode) -> None:
         self.__length += 1
@@ -40,11 +42,13 @@ class SinglyLinkedList:
         self.head = newNode
         self.head.next = temp
         del temp
+        self.printLS()
 
     def removeAt(self, index: int) -> None:
         if self.checkError(index, self.__length):
-            return "Error"
-        
+            print("Error")
+            return
+
         self.__length -= 1
         if index == 0:
             self.__removeAtHead()
@@ -54,12 +58,14 @@ class SinglyLinkedList:
         self.prevNode.next = traverse.next
         traverse.next = None
         del traverse
+        self.printLS()
 
     def __removeAtHead(self) -> None:
         temp = self.head
         self.head = self.head.next
         temp.next = None
         del temp
+        self.printLS()
 
     def clear(self) -> None:
         self.__length = 0
@@ -73,23 +79,26 @@ class SinglyLinkedList:
     def get(self, index: int):
         if self.checkError(index, self.__length):
             return "Error"
-        
+
         traverse = self.traverseList(index)
         return traverse.data
 
     def set(self, data, index: int) -> None:
         if self.checkError(index, self.__length):
-            return "Error"
-        
+            print("Error")
+            return
+
         traverse = self.traverseList(index)
         traverse.data = data
+        self.printLS()
 
     def contains(self, element) -> bool:
         traverse = self.head
         while traverse is not None:
-            if traverse.data == str(element):
+            if traverse.data == element:
                 return True
             traverse = traverse.next
+        return False
 
     def traverseList(self, index):   # will be used any time we need to traverse the list till a given index
         traverse, self.prevNode = (self.head,) * 2
@@ -100,22 +109,25 @@ class SinglyLinkedList:
 
     def printLS(self) -> None:   # print linked list (used for testing)
         currentNode = self.head
+        elements = []
         while currentNode is not None:
-            print(currentNode.data)
+            elements.append(currentNode.data)
             currentNode = currentNode.next
+        print(elements)
 
     def printSubList(self, fromIdx: int, toIdx: int) -> list:
         if self.checkError(0, self.__length, fromIdx=fromIdx, toIdx=toIdx):
-            return "Error"
-        
+            print("Error")
+            return
+
         traverse = self.traverseList(fromIdx)
         elements = []
         while fromIdx <= toIdx:
             elements.append(traverse.data)
             fromIdx += 1
             traverse = traverse.next
-        return elements
-    
+        print(elements)
+
     def checkError(self, index, length, fromIdx=0, toIdx=0):
         checks = [
                   index < 0, index >= length, toIdx < fromIdx,
@@ -125,11 +137,9 @@ class SinglyLinkedList:
         if any(checks):
             return True
 
-    @property
     def Size(self) -> int:
         return self.__length
 
-    @property
     def isEmpty(self) -> bool:
         return self.__length == 0
 
@@ -141,4 +151,44 @@ operation = input()
 for element in elements:
     node = SNode(element)
     Slinkedlist.insertAtEnd(node)
+
+if operation == "add":
+    Slinkedlist.insertAtEnd(SNode(int(input())))
+    Slinkedlist.printLS()
+
+elif operation == "addToIndex":
+    index = int(input())
+    node = SNode(int(input()))
+    Slinkedlist.insertAt(node, index)
     
+elif operation == "get":
+    index = int(input())
+    print(Slinkedlist.get(index))
+    
+elif operation == "size":
+    print(Slinkedlist.Size())
+    
+elif operation == "set":
+    index = int(input())
+    data = int(input())
+    Slinkedlist.set(data, index)
+
+elif operation == "clear":
+    Slinkedlist.clear()
+    print([])
+    
+elif operation == "isEmpty":
+    print(Slinkedlist.isEmpty())
+    
+elif operation == "remove":
+    index = int(input())
+    Slinkedlist.removeAt(index)
+
+elif operation == "sublist":
+    fromIdx = int(input())
+    toIdx = int(input())
+    Slinkedlist.printSubList(fromIdx, toIdx)
+    
+elif operation == "contains":
+    elmnt = int(input())
+    print(Slinkedlist.contains(elmnt))
