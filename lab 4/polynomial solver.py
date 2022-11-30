@@ -45,7 +45,12 @@ class SinglyLinkedList:
 
 
 def checkError(poly1="A", poly2="A"):
-    if (poly1 not in polyNamesList) or (poly2 not in polyNamesList):
+    checks = [
+                poly1 not in polyNamesList,
+                poly2 not in polyNamesList,
+             ]
+
+    if any(checks):
         return True
     return False
 
@@ -55,31 +60,19 @@ def setPolynomial(polyName, coeff):
     if polyName == "A":
         for coefficient in coeff:
             A.insertAtEnd(SNode(coefficient))
-            
-        if A.Size() == 0:
-            print("Error")
-            return
-        
+
         polynomials.append((polyName, A))
 
     elif polyName == "B":
         for coefficient in coeff:
             B.insertAtEnd(SNode(coefficient))
-        
-        if B.Size() == 0:
-            print("Error")
-            return
-        
+
         polynomials.append((polyName, B))
 
     elif polyName == "C":
         for coefficient in coeff:
             C.insertAtEnd(SNode(coefficient))
-            
-        if C.Size() == 0:
-            print("Error")
-            return
-        
+
         polynomials.append((polyName, C))
 
     else:
@@ -102,27 +95,26 @@ def printPolynomial(polyName, lstOrInst):
                     PN[i] = "+" + PN[i]
 
             degree = len(PN) - 1
-            for i in range(len(PN)):
-                if PN[i] == "-1" and i == 0:
-                    PN[i] = "-1"
-
-                elif PN[i] == "+1" or PN[i] == "1":
+            for i, elmnt in enumerate(PN):
+                if elmnt == "+1" or elmnt == "1":
                     if i == 0:
-                        PN[i] = ""
+                        elmnt = ""
 
                     else:
-                        PN[i] = "+"
+                        elmnt = "+"
 
                 if degree == 0:
-                    polynomialStr += f"{PN[i]}"
+                    polynomialStr += f"{elmnt}"
                     break
 
                 elif degree == 1:
-                    polynomialStr += f"{PN[i]}x"
+                    polynomialStr += f"{elmnt}x"
 
                 else:
-                    polynomialStr += f"{PN[i]}x^{degree}"
+                    polynomialStr += f"{elmnt}x^{degree}"
                 degree -= 1
+
+            break
 
     print(polynomialStr)
 
@@ -156,7 +148,7 @@ def subAddPolys(poly1, poly2, operation):
     else:
         for i in range(len(firstPoly)):
             result.append(firstPoly[i] - scndPoly[i])
-               
+
     R = list(filter((0).__ne__, result))   # remove all the zeros
     polynomials.append(("R", R))
     printPolynomial("R", "lst")
@@ -198,7 +190,7 @@ def clear(polyName):
             if not poly[1].Size():
                 print("Error")
                 return
-            
+
             poly[1].clear()
             print([])
             return
@@ -213,7 +205,7 @@ def eval(polyName, value):
         if poly[0] == polyName:
             polyList = poly[1].printLS()
             break
-    
+
     degree = len(polyList) - 1
     R = 0
     for term in polyList:
@@ -234,11 +226,11 @@ try:
             operation = input()
         except:
             break
-        
+
         if operation == "set":
             polyName = input()
             coeff = loads(input())
-            if len(coeff) == 0:
+            if not coeff:
                 print("Error")
                 break
             setPolynomial(polyName, coeff)
@@ -270,7 +262,7 @@ try:
             polyName = input()
             value = float(input())
             eval(polyName, value)
-            
+
         else:
             print("Error")
             break
