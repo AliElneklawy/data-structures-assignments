@@ -103,8 +103,8 @@ def printPolynomial(polyName, lstOrInst):
 
             degree = len(PN) - 1
             for i in range(len(PN)):
-                if PN[i] == "-1":
-                    PN[i] = "-"
+                if PN[i] == "-1" and i == 0:
+                    PN[i] = "-1"
 
                 elif PN[i] == "+1" or PN[i] == "1":
                     if i == 0:
